@@ -44,7 +44,7 @@
       const row = document.createElement('div');
       row.className = 'row mb-3 align-items-end';
 
-      // Colonna Giocatore
+      
       const col1 = document.createElement('div');
       col1.className = 'col';
       const playerLabel = document.createElement('label');
@@ -59,7 +59,7 @@
       col1.appendChild(playerLabel);
       col1.appendChild(playerSelect);
 
-      // Colonna Mazzo
+      
       const col2 = document.createElement('div');
       col2.className = 'col';
       const deckLabel = document.createElement('label');
@@ -91,7 +91,7 @@
     selectElement.innerHTML = filteredDecks.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
   }
 
-  // Carica i campi iniziali
+  
   window.onload = updatePlayerFields;
 </script>
 
