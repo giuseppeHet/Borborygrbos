@@ -1,0 +1,34 @@
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="card-title mb-4 text-center">Registra un Nuovo Giocatore</h4>
+
+      <!-- Messaggio di conferma (inizialmente nascosto) -->
+      {% if request.args.get('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          ✅ Giocatore registrato con successo!
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi"></button>
+        </div>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('add_player') }}">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nome del giocatore</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Es. Luca" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="image" class="form-label">Nome file immagine (opzionale)</label>
+          <input type="text" class="form-control" id="image" name="image" placeholder="Es. luca.jpg">
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-success">✅ Aggiungi</button>
+          <a href="{{ url_for('players_list') }}" class="btn btn-secondary">Annulla</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

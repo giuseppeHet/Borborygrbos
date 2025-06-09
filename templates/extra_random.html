@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">🎲 Generatore di Tavoli Casuali</h2>
+
+<form method="POST" class="mb-4">
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label for="num_players" class="form-label">Numero Partecipanti:</label>
+      <input type="number" class="form-control" name="num_players" id="num_players" min="1" required>
+    </div>
+    <div class="col-md-6">
+      <label for="num_tables" class="form-label">Numero Tavoli:</label>
+      <input type="number" class="form-control" name="num_tables" id="num_tables" min="1" required>
+    </div>
+  </div>
+  <button type="button" class="btn btn-secondary mb-3" onclick="generateNameFields()">➕ Inserisci Nomi</button>
+  <div id="name_fields" class="mb-3"></div>
+  <button type="submit" class="btn btn-primary">🎯 Genera Tavoli</button>
+</form>
+
+{% if tavoli %}
+  <h3>🪑 Tavoli Generati:</h3>
+  <div class="row">
+    {% for tavolo in tavoli %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">Tavolo {{ loop.index }}</h5>
+            <ul class="list-group list-group-flush">
+              {% for nome in tavolo %}
+                <li class="list-group-item">{{ nome }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<script>
+function generateNameFields() {
+  const numPlayers = document.getElementById('num_players').value;
+  const container = document.getElementById('name_fields');
+  container.innerHTML = '';
+
+  for (let i = 0; i < numPlayers; i++) {
+    const label = document.createElement('label');
+    label.innerText = `Nome ${i + 1}:`;
+    label.className = 'form-label';
+
+    const input = document.createElement('input');
+    input.name = `name_${i}`;
+    input.type = 'text';
+    input.className = 'form-control mb-2';
+    input.required = true;
+
+    container.appendChild(label);
+    container.appendChild(input);
+  }
+}
+</script>
+{% endblock %}

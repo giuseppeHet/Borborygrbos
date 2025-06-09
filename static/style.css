@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'MioFont';
+  src: url('/static/fonts/MAGIC.TTF') format('truetype');
+}
+body {
+  font-family: 'MioFont', sans-serif;
+}

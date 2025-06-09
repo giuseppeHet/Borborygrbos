@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>✨ Sezione Borb</h2>
+
+<hr>
+
+<!-- AUDIO PLAYER -->
+<h4>🎵 COMMANDER</h4>
+<audio controls>
+  <source src="{{ url_for('static', filename='audio/COMMANDER.mp3') }}" type="audio/mpeg">
+  Il tuo browser non supporta l'elemento audio.
+</audio>
+
+<hr>
+
+<!-- SPOTIFY LINK -->
+<h4>🎧 Playlist Ufficiale</h4>
+<p>
+  Borborygbros playlist Spotify:
+  <br>
+  <a href="https://open.spotify.com/playlist/50f3VJ1SpTAmqWz9o3myRx?si=7faePuIzSeObJbJOKG2-3w&pi=azjPNVHFRrWtn" target="_blank" class="btn btn-success mt-2">
+    Apri su Spotify
+  </a>
+</p>
+
+<hr>
+
+<!-- KEYWORDS PERSONALIZZATE -->
+<h4>🧙‍♂️ Keywords Magic</h4>
+<ul class="list-group mt-3">
+  {% for word in keywords %}
+    <li class="list-group-item">{{ word }}</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

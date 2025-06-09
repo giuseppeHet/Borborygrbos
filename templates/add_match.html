@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Registra Partita</h2>
+
+<form method="POST">
+  <div class="mb-3">
+    <label for="num_players" class="form-label">Numero Giocatori:</label>
+    <select id="num_players" name="num_players" class="form-select" onchange="updatePlayerFields()">
+      {% for n in range(3, 6) %}
+        <option value="{{ n }}">{{ n }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div id="player_inputs"></div>
+
+  <div class="mb-3">
+    <label for="winner" class="form-label">Vincitore:</label>
+    <select name="winner" id="winner" class="form-select">
+      {% for player in players %}
+        <option value="{{ player.id }}">{{ player.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="date" class="form-label">Anno:</label>
+    <input type="number" name="date" id="date" class="form-control" min="1900" max="2100" required placeholder="es. 2025">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Salva Partita</button>
+</form>
+
+<script>
+  const players = {{ players|tojson }};
+  const decks = {{ decks|tojson }};
+
+  function updatePlayerFields() {
+    const container = document.getElementById('player_inputs');
+    const num = parseInt(document.getElementById('num_players').value);
+    container.innerHTML = '';
+
+    for (let i = 0; i < num; i++) {
+      const row = document.createElement('div');
+      row.className = 'row mb-3 align-items-end';
+
+      // Colonna Giocatore
+      const col1 = document.createElement('div');
+      col1.className = 'col';
+      const playerLabel = document.createElement('label');
+      playerLabel.className = 'form-label';
+      playerLabel.innerText = `Giocatore ${i + 1}:`;
+      const playerSelect = document.createElement('select');
+      playerSelect.name = `player_${i}`;
+      playerSelect.className = 'form-select';
+      playerSelect.setAttribute('data-index', i);
+      playerSelect.innerHTML = players.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+      playerSelect.addEventListener('change', updateDeckSelect);
+      col1.appendChild(playerLabel);
+      col1.appendChild(playerSelect);
+
+      // Colonna Mazzo
+      const col2 = document.createElement('div');
+      col2.className = 'col';
+      const deckLabel = document.createElement('label');
+      deckLabel.className = 'form-label';
+      deckLabel.innerText = `Mazzo ${i + 1}:`;
+      const deckSelect = document.createElement('select');
+      deckSelect.name = `deck_${i}`;
+      deckSelect.className = 'form-select';
+      deckSelect.id = `deck_${i}`;
+      col2.appendChild(deckLabel);
+      col2.appendChild(deckSelect);
+
+      row.appendChild(col1);
+      row.appendChild(col2);
+      container.appendChild(row);
+
+      updateDeckOptions(deckSelect, players[0].id);
+    }
+  }
+
+  function updateDeckSelect(event) {
+    const index = event.target.getAttribute('data-index');
+    const deckSelect = document.getElementById(`deck_${index}`);
+    updateDeckOptions(deckSelect, event.target.value);
+  }
+
+  function updateDeckOptions(selectElement, playerId) {
+    const filteredDecks = decks.filter(deck => deck.player_id == playerId);
+    selectElement.innerHTML = filteredDecks.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+  }
+
+  // Carica i campi iniziali
+  window.onload = updatePlayerFields;
+</script>
+
+{% endblock %}

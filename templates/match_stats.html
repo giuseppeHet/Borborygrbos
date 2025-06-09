@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-4">📊 Statistiche Partite</h2>
+
+<div class="row g-4">
+
+  <!-- Partite per Anno -->
+  <div class="col-md-6">
+    <div class="card h-100 shadow-sm">
+      <div class="card-header bg-primary text-white">
+        📅 Partite per Anno
+      </div>
+      <div class="card-body overflow-auto" style="max-height: 300px;">
+        <ul class="list-group list-group-flush">
+          {% for row in matches_per_year %}
+            <li class="list-group-item d-flex justify-content-between">
+              <strong>{{ row.year }}</strong>
+              <span>{{ row.total }} partite</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Giocatore più vincente -->
+  <div class="col-md-6">
+    <div class="card h-100 shadow-sm">
+      <div class="card-header bg-success text-white">
+        🏆 Giocatore più Vincente
+      </div>
+      <div class="card-body">
+        {% if top_winner %}
+          <p class="mb-0"><strong>{{ top_winner.name }}</strong> con {{ top_winner.wins }} vittorie</p>
+        {% else %}
+          <p>Nessun dato disponibile.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Mazzo più vincente -->
+  <div class="col-md-6">
+    <div class="card h-100 shadow-sm">
+      <div class="card-header bg-info text-white">
+        🃏 Mazzo più Vincente
+      </div>
+      <div class="card-body">
+        {% if top_deck %}
+          <p class="mb-0"><strong>{{ top_deck.name }}</strong> con {{ top_deck.wins }} vittorie</p>
+        {% else %}
+          <p>Nessun dato disponibile.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Giocatore più perdente -->
+  <div class="col-md-6">
+    <div class="card h-100 shadow-sm">
+      <div class="card-header bg-danger text-white">
+        💀 Giocatore più Perdente
+      </div>
+      <div class="card-body">
+        {% if most_losses %}
+          <p class="mb-0"><strong>{{ most_losses.name }}</strong> con {{ most_losses.losses }} sconfitte</p>
+        {% else %}
+          <p>Nessun dato disponibile.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Mazzo più perdente -->
+  <div class="col-md-6">
+    <div class="card h-100 shadow-sm">
+      <div class="card-header bg-dark text-white">
+        🗑️ Mazzo più Perdente
+      </div>
+      <div class="card-body">
+        {% if most_losing_deck %}
+          <p class="mb-0"><strong>{{ most_losing_deck.name }}</strong> con {{ most_losing_deck.losses }} sconfitte</p>
+        {% else %}
+          <p>Nessun dato disponibile.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

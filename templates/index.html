@@ -1,0 +1,32 @@
+
+{% extends "base.html" %}
+{% block content %}
+  <!-- Banner -->
+  <div class="position-relative mb-5" style="height: 300px; overflow: hidden; border-radius: 15px;">
+    <img src="/static/images/home/banner2.jpg" class="w-100 h-100 object-fit-cover" style="object-fit: cover; opacity: 0.75" alt="Banner Magic">
+    <h1 class="position-absolute top-50 start-50 translate-middle text-dark fw-bold display-3 text-shadow" style="text-shadow: 2px 2px 8px rgba(255,255,255,0.7);">
+      BORBORYGBROS!
+    </h1>
+  </div>
+
+  <!-- Card Grid -->
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% set cards = [
+      {'title': 'Giocatori', 'image': 'players.jpeg', 'url': '/players'},
+      {'title': 'Partite', 'image': 'matches.jpg', 'url': '/matches'},
+      {'title': 'Altro', 'image': 'misc.jpg', 'url': '/extra'}
+    ] %}
+    {% for card in cards %}
+    <div class="col">
+      <a href="{{ card.url }}" class="text-decoration-none">
+        <div class="position-relative shadow-sm rounded overflow-hidden" style="height: 250px;">
+          <img src="/static/images/home/{{ card.image }}" class="w-100 h-100" style="object-fit: cover; opacity: 0.75" alt="{{ card.title }}">
+          <div class="position-absolute top-50 start-50 translate-middle text-white text-center fw-bold fs-3 text-shadow" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">
+            {{ card.title }}
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">Storico Partite</h2>
+
+{% for year, matches in matches_by_year.items() %}
+  <div class="mb-4">
+    <button class="btn btn-outline-primary w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#year-{{ year }}">
+      {{ year }}
+    </button>
+
+    <div class="collapse show mt-2" id="year-{{ year }}">
+      {% for match in matches %}
+        <div class="d-flex align-items-center border rounded p-2 mb-2 shadow-sm bg-light">
+          
+          {% if match.winning_deck and match.winning_deck.image %}
+            <img src="{{ url_for('static', filename='images/decks/' ~ match.winning_deck.image) }}"
+                 alt="Deck Image"
+                 class="img-thumbnail me-3"
+                 style="width: 100px; height: auto;">
+          {% else %}
+            <div class="me-3" style="width: 100px; height: 100px; background: #ddd; display: flex; align-items: center; justify-content: center;">
+              <span class="text-muted small">No Image</span>
+            </div>
+          {% endif %}
+
+          <div class="flex-grow-1">
+            <div><strong>Data:</strong> {{ match.date }}</div>
+            <div><strong>Vincitore:</strong> {{ match.winner_name }}</div>
+            {% if match.winning_deck %}
+              <div><strong>Mazzo Vincente:</strong> {{ match.winning_deck.name }}</div>
+            {% endif %}
+            <div>
+              <strong>Partecipanti:</strong>
+              {% for p in match.participants %}
+                {{ p.player_name }} ({{ p.deck_name }}){% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          <form action="{{ url_for('delete_match', match_id=match.id) }}" method="post" class="ms-3">
+            <button type="submit" class="btn btn-sm btn-danger"
+                    onclick="return confirm('Sei sicuro di voler eliminare la partita?');">
+              Elimina
+            </button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+{% endblock %}

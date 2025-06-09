@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Banner giocatore -->
+<div class="position-relative mb-5" style="height: 200px; overflow: hidden; border-radius: 15px;">
+  <img src="{{ url_for('static', filename='images/profiles/' + (player['image'] or 'default_player.jpg')) }}"
+       class="w-100 h-100 p-0 m-0 border-0" style="object-fit: cover; object-position: center; display: block;" alt="Banner Magic">
+  <h1 class="position-absolute top-50 start-50 translate-middle text-dark fw-bold display-3 text-shadow"
+      style="text-shadow: 2px 2px 8px rgba(255,255,255,0.7);">
+    {{ player['name'] }}
+  </h1>
+</div>
+
+<h3 class="mb-4">Lista Mazzi</h3>
+
+{% if decks %}
+  <div class="d-flex flex-column gap-3">
+    {% for deck in decks %}
+    <div class="card shadow-sm m-0 p-0 border-0" style="height: 100px; overflow: hidden;">
+      <div class="row g-0 h-100 align-items-center m-0 p-0">
+        <!-- Immagine -->
+        <div class="col-auto m-0 p-0" style="height: 100px; width: 150px; overflow: hidden;">
+          <img src="{{ url_for('static', filename='images/decks/' + (deck['image'] or 'default_deck.jpg')) }}"
+               class="h-100 w-100 rounded-start m-0 p-0 border-0" style="object-fit: cover; object-position: center; display: block;" alt="{{ deck['name'] }}">
+        </div>
+
+        <!-- Info -->
+        <div class="col d-flex align-items-center px-3 h-100">
+          <div class="w-100 d-flex justify-content-between align-items-center">
+            <!-- Nome Mazzo -->
+            <h5 class="card-title mb-0 fw-bold">{{ deck['name'] }}</h5>
+
+            <!-- Simboli Colori -->
+            <div>
+              {% for color in deck['colors'].split(',') %}
+                <img src="{{ url_for('static', filename='images/icons/' + color.strip() + '.png') }}"
+                     alt="{{ color }}" class="ms-2" style="width: 24px;">
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>Nessun mazzo registrato.</p>
+{% endif %}
+
+<!-- Bottone aggiungi mazzo -->
+<div class="mt-4 mb-5">
+  <a href="{{ url_for('add_deck', player_id=player['id']) }}" class="btn btn-success">➕ Aggiungi Mazzo</a>
+</div>
+
+<!-- Statistiche Giocatore -->
+<div class="mt-5">
+  <h3 class="mb-3">📊 Statistiche Giocatore</h3>
+  <ul class="list-group">
+    <li class="list-group-item">Numero mazzi: <strong>{{ stats.total_decks }}</strong></li>
+    <li class="list-group-item">Partite giocate: <strong>{{ stats.total_matches }}</strong></li>
+    <li class="list-group-item">Vittorie: <strong>{{ stats.total_wins }}</strong></li>
+    <li class="list-group-item">Sconfitte: <strong>{{ stats.total_losses }}</strong></li>
+    <li class="list-group-item">Mazzo più usato: <strong>{{ stats.most_used_deck or 'N/D' }}</strong></li>
+    <li class="list-group-item">Mazzo più vincente: <strong>{{ stats.most_successful_deck or 'N/D' }}</strong></li>
+    <li class="list-group-item">
+      Colore/i preferito/i:
+      {% for color in stats.favorite_colors %}
+        <img src="{{ url_for('static', filename='images/icons/' + color + '.png') }}" alt="{{ color }}" style="width: 24px;" class="ms-2">
+      {% endfor %}
+    </li>
+  </ul>
+</div>
+
+{% endblock %}

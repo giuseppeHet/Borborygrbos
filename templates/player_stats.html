@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+
+  <h2 class="mb-4">Statistiche Giocatori</h2>
+
+  <!-- Giocatori con più partite giocate -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">🎮 Giocatori con più partite giocate</div>
+    <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+      <ul class="list-group">
+        {% for p in most_played %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ p.name }}
+            <span class="badge bg-primary rounded-pill">{{ p.matches_played }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Giocatori con più vittorie -->
+  <div class="card mb-4">
+    <div class="card-header bg-success text-white">🏆 Giocatori con più vittorie</div>
+    <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+      <ul class="list-group">
+        {% for p in most_wins %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ p.name }}
+            <span class="badge bg-success rounded-pill">{{ p.wins }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Partite giocate per anno -->
+  <div class="card mb-4">
+    <div class="card-header bg-info text-white">📅 Partite giocate per anno</div>
+    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+      {% for year in matches_per_year_all_years %}
+        <h5 class="mt-3">{{ year }}</h5>
+        <table class="table table-sm table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>Giocatore</th>
+              <th>Partite</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for player, years in matches_per_year.items() %}
+              {% if years[year] %}
+              <tr>
+                <td>{{ player }}</td>
+                <td>{{ years[year] }}</td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Vittorie per anno -->
+  <div class="card mb-4">
+    <div class="card-header bg-warning text-dark">🥇 Vittorie per anno</div>
+    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+      {% for year in wins_per_year_all_years %}
+        <h5 class="mt-3">{{ year }}</h5>
+        <table class="table table-sm table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>Giocatore</th>
+              <th>Vittorie</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for player, years in wins_per_year.items() %}
+              {% if years[year] %}
+              <tr>
+                <td>{{ player }}</td>
+                <td>{{ years[year] }}</td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

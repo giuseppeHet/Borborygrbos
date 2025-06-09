@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🔗 Link Utili</h2>
+
+<div class="list-group mt-4">
+  {% for link in links %}
+    <a href="{{ link.url }}" target="_blank" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">{{ link.name }}</div>
+      </div>
+      <span class="badge bg-primary rounded-pill">Visita</span>
+    </a>
+  {% endfor %}
+</div>
+{% endblock %}
