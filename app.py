@@ -535,5 +535,5 @@ def extra_random():
 
 
 if __name__ == '__main__':
-    init_db()
+    #init_db()
     app.run()
