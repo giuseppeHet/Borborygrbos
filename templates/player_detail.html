@@ -4,7 +4,7 @@
 <!-- Banner giocatore -->
 <div class="position-relative mb-5" style="height: 200px; overflow: hidden; border-radius: 15px;">
   <img src="{{ url_for('static', filename='images/profiles/' + (player['image'] or 'default_player.jpg')) }}"
-       class="w-100 h-100 p-0 m-0 border-0" style="object-fit: cover; object-position: center; display: block;" alt="Banner Magic">
+       class="w-100 h-100 p-0 m-0 border-0" style="object-fit: cover; object-position: center;" alt="Banner Magic">
   <h1 class="position-absolute top-50 start-50 translate-middle text-dark fw-bold display-3 text-shadow"
       style="text-shadow: 2px 2px 8px rgba(255,255,255,0.7);">
     {{ player['name'] }}
@@ -21,26 +21,74 @@
         <!-- Immagine -->
         <div class="col-auto m-0 p-0" style="height: 100px; width: 150px; overflow: hidden;">
           <img src="{{ url_for('static', filename='images/decks/' + (deck['image'] or 'default_deck.jpg')) }}"
-               class="h-100 w-100 rounded-start m-0 p-0 border-0" style="object-fit: cover; object-position: center; display: block;" alt="{{ deck['name'] }}">
+               class="h-100 w-100 rounded-start m-0 p-0 border-0" style="object-fit: cover;" alt="{{ deck['name'] }}">
         </div>
 
         <!-- Info -->
         <div class="col d-flex align-items-center px-3 h-100">
           <div class="w-100 d-flex justify-content-between align-items-center">
-            <!-- Nome Mazzo -->
-            <h5 class="card-title mb-0 fw-bold">{{ deck['name'] }}</h5>
-
-            <!-- Simboli Colori -->
             <div>
+              <h5 class="card-title mb-0 fw-bold">{{ deck['name'] }}</h5>
+              <!-- Simboli Colori -->
               {% for color in deck['colors'].split(',') %}
                 <img src="{{ url_for('static', filename='images/icons/' + color.strip() + '.png') }}"
-                     alt="{{ color }}" class="ms-2" style="width: 24px;">
+                     alt="{{ color }}" class="ms-1" style="width: 24px;">
               {% endfor %}
             </div>
+
+            <!-- Bottone Modifica -->
+            <button class="btn btn-outline-secondary btn-sm ms-3" data-bs-toggle="modal" data-bs-target="#editModal{{ deck.id }}">
+              ✏️ Modifica
+            </button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Modale Bootstrap -->
+    <div class="modal fade" id="editModal{{ deck.id }}" tabindex="-1" aria-labelledby="editModalLabel{{ deck.id }}" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <form method="POST" action="{{ url_for('edit_deck', deck_id=deck.id) }}" enctype="multipart/form-data">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editModalLabel{{ deck.id }}">Modifica Mazzo</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" class="form-control" name="name" value="{{ deck.name }}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Colori (es. Blue,Red)</label>
+                <input type="text" class="form-control" name="colors" value="{{ deck.colors }}">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nuova Immagine (facoltativa)</label>
+                <input type="file" class="form-control" name="image">
+              </div>
+              {% if deck.image %}
+                <img src="{{ url_for('static', filename='images/decks/' + deck.image) }}"
+                     class="img-fluid rounded" style="max-height: 120px;">
+              {% endif %}
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Salva</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+            </div>
+          </form>
+
+          <!-- Form per eliminazione -->
+          <form method="POST" action="{{ url_for('delete_deck', deck_id=deck.id) }}"
+                onsubmit="return confirm('Sei sicuro di voler eliminare il mazzo?');">
+            <div class="text-center my-2">
+              <button type="submit" class="btn btn-sm btn-danger">🗑️ Elimina Mazzo</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     {% endfor %}
   </div>
 {% else %}
@@ -65,7 +113,8 @@
     <li class="list-group-item">
       Colore/i preferito/i:
       {% for color in stats.favorite_colors %}
-        <img src="{{ url_for('static', filename='images/icons/' + color + '.png') }}" alt="{{ color }}" style="width: 24px;" class="ms-2">
+        <img src="{{ url_for('static', filename='images/icons/' + color + '.png') }}"
+             alt="{{ color }}" style="width: 24px;" class="ms-2">
       {% endfor %}
     </li>
   </ul>
