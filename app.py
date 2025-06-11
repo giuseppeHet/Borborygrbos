@@ -109,6 +109,7 @@ def add_player():
 from collections import defaultdict
 from datetime import datetime
 
+'''
 @app.route('/decks/<int:deck_id>/edit', methods=['GET', 'POST'])
 def edit_deck(deck_id):
     conn = sqlite3.connect('db.sqlite3')
@@ -140,7 +141,7 @@ def edit_deck(deck_id):
 
     conn.close()
     return render_template('edit_deck.html', deck=deck)
-
+'''
 
 @app.route('/players/stats')
 def player_stats():
