@@ -109,6 +109,36 @@ def add_player():
 from collections import defaultdict
 from datetime import datetime
 
+@app.route('/decks/<int:deck_id>/edit', methods=['POST'])
+def edit_deck(deck_id):
+    conn = sqlite3.connect('db.sqlite3')
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+
+    deck = c.execute('SELECT * FROM decks WHERE id = ?', (deck_id,)).fetchone()
+    if not deck:
+        conn.close()
+        return "Deck not found", 404
+
+    name = request.form['name']
+    colors = request.form['colors']
+    image = request.files.get('image')
+
+    filename = deck['image']  # mantiene immagine esistente
+
+    if image and image.filename and allowed_file(image.filename):
+        filename = secure_filename(image.filename)
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image.save(save_path)
+
+    c.execute('''
+        UPDATE decks SET name = ?, colors = ?, image = ? WHERE id = ?
+    ''', (name, colors, filename, deck_id))
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('player_detail', player_id=deck['player_id']))
+
 
 @app.route('/decks/<int:deck_id>/delete', methods=['POST'])
 def delete_deck(deck_id):
