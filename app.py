@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 
 # Carica variabili da .env (da togliere se non lo usiamo)
-load_dotenv()
+# load_dotenv()
 
 app = Flask(__name__)
 
