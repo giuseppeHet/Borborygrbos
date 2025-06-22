@@ -73,7 +73,7 @@ class MatchPlayer(db.Model):
     deck_id = db.Column(db.Integer, db.ForeignKey('decks.id'), nullable=False)
 
 # Inizializzazione del DB (una tantum, da commentare dopo primo avvio):
-  with app.app_context():
+with app.app_context():
     db.create_all()
 
 
