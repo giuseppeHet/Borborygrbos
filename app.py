@@ -182,25 +182,18 @@ def player_stats():
 @app.route('/players/<int:player_id>')
 def player_detail(player_id):
     player = Player.query.get_or_404(player_id)
-
     decks = Deck.query.filter_by(player_id=player_id).all()
     color_counter = {}
-    deck_list = []
 
+    # Elabora solo i colori (senza cambiare il tipo degli oggetti)
     for deck in decks:
         color_list = [c.strip() for c in (deck.colors or '').split(',') if c.strip()]
         sorted_colors = ','.join(sorted(color_list))
-        deck_data = {
-            'id': deck.id,
-            'name': deck.name,
-            'colors': sorted_colors,
-            'image': deck.image
-        }
+        deck.colors = sorted_colors  # aggiorna direttamente il campo dell'oggetto!
         for c_ in color_list:
             color_counter[c_] = color_counter.get(c_, 0) + 1
-        deck_list.append(deck_data)
 
-    total_decks = len(deck_list)
+    total_decks = len(decks)
     total_matches = MatchPlayer.query.filter_by(player_id=player_id).count()
     total_wins = Match.query.filter_by(winner_id=player_id).count()
     total_losses = total_matches - total_wins
@@ -239,7 +232,8 @@ def player_detail(player_id):
         'favorite_colors': favorite_colors
     }
 
-    return render_template('player_detail.html', player=player, decks=deck_list, stats=stats)
+    return render_template('player_detail.html', player=player, decks=decks, stats=stats)
+
 
 @app.route('/players/<int:player_id>/add_deck', methods=['GET', 'POST'])
 def add_deck(player_id):
