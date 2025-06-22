@@ -262,6 +262,35 @@ def add_deck(player_id):
 
     return render_template('add_deck.html', player_id=player_id)
 
+@app.route('/decks/<int:deck_id>/delete', methods=['POST'])
+def delete_deck(deck_id):
+    deck = Deck.query.get_or_404(deck_id)
+    player_id = deck.player_id  
+    #MatchPlayer.query.filter_by(deck_id=deck_id).delete()
+    db.session.delete(deck)
+    db.session.commit()
+    return redirect(url_for('player_detail', player_id=player_id))
+
+@app.route('/decks/<int:deck_id>/edit', methods=['POST'])
+def edit_deck(deck_id):
+    deck = Deck.query.get_or_404(deck_id)
+    name = request.form.get('name', deck.name)
+    colors = request.form.get('colors', deck.colors)
+    image = request.files.get('image')
+    
+    # Aggiorna nome e colori
+    deck.name = name
+    deck.colors = colors
+
+    # Se caricato, aggiorna l'immagine
+    if image and image.filename and allowed_file(image.filename):
+        filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        deck.image = filename
+
+    db.session.commit()
+    return redirect(url_for('player_detail', player_id=deck.player_id))
+
 @app.route('/matches/list')
 def match_list():
     matches = (
