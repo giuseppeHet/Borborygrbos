@@ -18,7 +18,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Database config 
-app.config['SQLALCHEMY_DATABASE_URI'] = postgresql://mtg_db_yzhn_user:d7byad1T8ssN5Fc5iaJnLVQup1q5yc7z@dpg-d14mouh5pdvs73fbmuk0-a/mtg_db_yzhn
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://mtg_db_yzhn_user:d7byad1T8ssN5Fc5iaJnLVQup1q5yc7z@dpg-d14mouh5pdvs73fbmuk0-a/mtg_db_yzhn"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
