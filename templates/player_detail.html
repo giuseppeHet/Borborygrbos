@@ -3,11 +3,11 @@
 
 <!-- Banner giocatore -->
 <div class="position-relative mb-5" style="height: 200px; overflow: hidden; border-radius: 15px;">
-  <img src="{{ url_for('static', filename='images/profiles/' + (player['image or 'default_player.jpg')) }}"
+  <img src="{{ url_for('static', filename='images/profiles/' + (player.image or 'default_player.jpg')) }}"
        class="w-100 h-100 p-0 m-0 border-0" style="object-fit: cover; object-position: center;" alt="Banner Magic">
   <h1 class="position-absolute top-50 start-50 translate-middle text-dark fw-bold display-3 text-shadow"
       style="text-shadow: 2px 2px 8px rgba(255,255,255,0.7);">
-    {{ player['name }}
+    {{ player.name }}
   </h1>
 </div>
 
@@ -97,7 +97,7 @@
 
 <!-- Bottone aggiungi mazzo -->
 <div class="mt-4 mb-5">
-  <a href="{{ url_for('add_deck', player_id=player['id) }}" class="btn btn-success">➕ Aggiungi Mazzo</a>
+  <a href="{{ url_for('add_deck', player_id=player.id) }}" class="btn btn-success">➕ Aggiungi Mazzo</a>
 </div>
 
 <!-- Statistiche Giocatore -->
